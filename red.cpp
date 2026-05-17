@@ -7,9 +7,9 @@
 #include <functional>
 #include <algorithm>
 
-// ─────────────────────────────────────────────
+// --------------------------------------------
 // Gestión de enrutadores
-// ─────────────────────────────────────────────
+// --------------------------------------------
 void Red::agregarEnrutador(const std::string& id) {
     if (enrutadores_.find(id) == enrutadores_.end()) {
         enrutadores_.emplace(id, Enrutador(id));
@@ -43,9 +43,9 @@ int Red::numEnrutadores() const {
     return static_cast<int>(enrutadores_.size());
 }
 
-// ─────────────────────────────────────────────
+// --------------------------------------------
 // Gestión de enlaces
-// ─────────────────────────────────────────────
+// ---------------------------------------------
 bool Red::agregarEnlace(const std::string& origen, const std::string& destino, int costo) {
     if (!existeEnrutador(origen)) {
         std::cout << "[!] Enrutador origen '" << origen << "' no existe.\n";
@@ -80,19 +80,10 @@ bool Red::eliminarEnlace(const std::string& origen, const std::string& destino) 
     return true;
 }
 
-// ─────────────────────────────────────────────
-// Algoritmo de Dijkstra
-// ─────────────────────────────────────────────
-/*
- * Dijkstra centralizado ejecutado desde un nodo origen.
- * Estructuras usadas:
- *   - priority_queue (min-heap) con pares (costo, nodo)  →  extracción O(log n)
- *   - map<string, int> dist  para distancias conocidas
- *   - map<string, string> previo  para reconstruir el camino
- *
- * Al finalizar, actualiza la tabla del enrutador origen con los costos
- * y caminos completos hacia todos los destinos alcanzables.
- */
+// --------------------------------------------
+// Algoritmo de Dijkstra (para hallar el costo)
+//----------------------------------------------
+
 void Red::dijkstra(const std::string& origen) {
     // dist[v] = costo mínimo conocido desde origen hasta v
     std::map<std::string, int> dist;
@@ -167,18 +158,18 @@ void Red::dijkstra(const std::string& origen) {
     }
 }
 
-// ─────────────────────────────────────────────
+//----------------------------------------------
 // Calcular rutas para todos los enrutadores
-// ─────────────────────────────────────────────
+//----------------------------------------------
 void Red::calcularRutas() {
     for (const auto& par : enrutadores_) {
         dijkstra(par.first);
     }
 }
 
-// ─────────────────────────────────────────────
+// ---------------------------------------------
 // Consulta de camino y costo
-// ─────────────────────────────────────────────
+// ---------------------------------------------
 list<string> Red::obtenerCamino(const string& origen,
                                           const string& destino) const {
     auto it = enrutadores_.find(origen);
@@ -195,20 +186,10 @@ int Red::obtenerCosto(const string& origen, const string& destino) const {
     return (jt->second == INF) ? -1 : jt->second;
 }
 
-// ─────────────────────────────────────────────
+// ---------------------------------------------
 // Carga desde archivo
-// ─────────────────────────────────────────────
-/*
- * Formato del archivo de topología:
- *   # Comentario (líneas ignoradas)
- *   ROUTER <id>
- *   LINK <id_a> <id_b> <costo>
- *
- * Ejemplo:
- *   ROUTER A
- *   ROUTER B
- *   LINK A B 4
- */
+// ---------------------------------------------
+
 bool Red::cargarDesdeArchivo(const string& archivo) {
     ifstream fin(archivo);
     if (!fin.is_open()) {
@@ -268,9 +249,9 @@ bool Red::cargarDesdeArchivo(const string& archivo) {
     return true;
 }
 
-// ─────────────────────────────────────────────
+// ---------------------------------------------
 // Impresión
-// ─────────────────────────────────────────────
+// ---------------------------------------------
 void Red::listarEnrutadores() const {
     cout << "\n  Enrutadores en la red (" << enrutadores_.size() << "):\n";
     for (const auto& par : enrutadores_) {

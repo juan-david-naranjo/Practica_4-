@@ -9,21 +9,7 @@
 #include "Enrutador.h"
 using namespace std;
 
-/*
- * Clase Red
- * ---------
- * Modela la topología completa de la red. Almacena:
- *  - Conjunto de enrutadores  →  map<string, Enrutador>
- *    (map elegido para acceso O(log n) por nombre; los enrutadores se
- *     identifican con strings únicos)
- *
- * Responsabilidades:
- *  - Agregar / eliminar enrutadores y enlaces
- *  - Ejecutar Dijkstra centralizado para calcular caminos mínimos
- *  - Actualizar las tablas de todos los enrutadores
- *  - Cargar topología desde archivo
- *  - Imprimir información de la red
- */
+
 class Red {
 public:
     // --- Gestión de enrutadores ---
@@ -47,11 +33,7 @@ public:
     // Devuelve el costo del camino entre origen y destino (-1 si no existe)
     int obtenerCosto(const string& origen, const string& destino) const;
 
-    // --- Carga desde archivo ---
-    // Formato del archivo:
-    //   Líneas que comienzan con '#' son comentarios
-    //   "ROUTER <id>"         → declara un enrutador
-    //   "LINK <a> <b> <costo>"→ declara un enlace bidireccional
+
     bool cargarDesdeArchivo(const string& archivo);
 
     // --- Impresión ---

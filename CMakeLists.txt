@@ -11,6 +11,7 @@ add_executable(Practica_4 main.cpp
 
     red.h red.cpp
     enrutador.h enrutador.cpp
+    Enlace.h
 )
 
 target_link_libraries(Practica_4 PRIVATE Qt6::Core)
