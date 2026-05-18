@@ -10,20 +10,20 @@
 // --------------------------------------------
 // Gestión de enrutadores
 // --------------------------------------------
-void Red::agregarEnrutador(const std::string& id) {
+void Red::agregarEnrutador(const string& id) {
     if (enrutadores_.find(id) == enrutadores_.end()) {
         enrutadores_.emplace(id, Enrutador(id));
-        std::cout << "[+] Enrutador '" << id << "' agregado.\n";
+        cout << "[+] Enrutador '" << id << "' agregado.\n";
         calcularRutas();
     } else {
-        std::cout << "[!] El enrutador '" << id << "' ya existe.\n";
+        cout << "[!] El enrutador '" << id << "' ya existe.\n";
     }
 }
 
-void Red::eliminarEnrutador(const std::string& id) {
+void Red::eliminarEnrutador(const string& id) {
     auto it = enrutadores_.find(id);
     if (it == enrutadores_.end()) {
-        std::cout << "[!] El enrutador '" << id << "' no existe.\n";
+        cout << "[!] El enrutador '" << id << "' no existe.\n";
         return;
     }
     // Eliminar todos los enlaces hacia este enrutador en los demás nodos
@@ -31,11 +31,11 @@ void Red::eliminarEnrutador(const std::string& id) {
         par.second.eliminarVecino(id);
     }
     enrutadores_.erase(it);
-    std::cout << "[-] Enrutador '" << id << "' eliminado.\n";
+    cout << "[-] Enrutador '" << id << "' eliminado.\n";
     calcularRutas();
 }
 
-bool Red::existeEnrutador(const std::string& id) const {
+bool Red::existeEnrutador(const string& id) const {
     return enrutadores_.find(id) != enrutadores_.end();
 }
 
@@ -46,36 +46,36 @@ int Red::numEnrutadores() const {
 // --------------------------------------------
 // Gestión de enlaces
 // ---------------------------------------------
-bool Red::agregarEnlace(const std::string& origen, const std::string& destino, int costo) {
+bool Red::agregarEnlace(const string& origen, const string& destino, int costo) {
     if (!existeEnrutador(origen)) {
-        std::cout << "[!] Enrutador origen '" << origen << "' no existe.\n";
+        cout << "[!] Enrutador origen '" << origen << "' no existe.\n";
         return false;
     }
     if (!existeEnrutador(destino)) {
-        std::cout << "[!] Enrutador destino '" << destino << "' no existe.\n";
+        cout << "[!] Enrutador destino '" << destino << "' no existe.\n";
         return false;
     }
     if (costo <= 0) {
-        std::cout << "[!] El costo debe ser mayor que 0.\n";
+        cout << "[!] El costo debe ser mayor que 0.\n";
         return false;
     }
     // Enlace bidireccional
     enrutadores_.at(origen).agregarVecino(destino, costo);
     enrutadores_.at(destino).agregarVecino(origen, costo);
-    std::cout << "[+] Enlace " << origen << " <-> " << destino
+    cout << "[+] Enlace " << origen << " <-> " << destino
               << " (costo: " << costo << ") agregado.\n";
     calcularRutas();
     return true;
 }
 
-bool Red::eliminarEnlace(const std::string& origen, const std::string& destino) {
+bool Red::eliminarEnlace(const string& origen, const string& destino) {
     if (!existeEnrutador(origen) || !existeEnrutador(destino)) {
-        std::cout << "[!] Uno o ambos enrutadores no existen.\n";
+        cout << "[!] Uno o ambos enrutadores no existen.\n";
         return false;
     }
     enrutadores_.at(origen).eliminarVecino(destino);
     enrutadores_.at(destino).eliminarVecino(origen);
-    std::cout << "[-] Enlace " << origen << " <-> " << destino << " eliminado.\n";
+    cout << "[-] Enlace " << origen << " <-> " << destino << " eliminado.\n";
     calcularRutas();
     return true;
 }
@@ -84,11 +84,11 @@ bool Red::eliminarEnlace(const std::string& origen, const std::string& destino) 
 // Algoritmo de Dijkstra (para hallar el costo)
 //----------------------------------------------
 
-void Red::dijkstra(const std::string& origen) {
+void Red::dijkstra(const string& origen) {
     // dist[v] = costo mínimo conocido desde origen hasta v
-    std::map<std::string, int> dist;
+    map<std::string, int> dist;
     // previo[v] = nodo anterior en el camino mínimo hacia v
-    std::map<std::string, std::string> previo;
+    map<string, string> previo;
 
     // Inicializar distancias a INF
     for (const auto& par : enrutadores_) {
@@ -98,10 +98,10 @@ void Red::dijkstra(const std::string& origen) {
     dist[origen] = 0;
 
     // Min-heap: (distancia, nodo)
-    using ParDistNodo = std::pair<int, std::string>;
-    std::priority_queue<ParDistNodo,
-                        std::vector<ParDistNodo>,
-                        std::greater<ParDistNodo>> cola;
+    using ParDistNodo = pair<int, string>;
+    priority_queue<ParDistNodo,
+                        vector<ParDistNodo>,
+                        greater<ParDistNodo>> cola;
     cola.push({0, origen});
 
     while (!cola.empty()) {
@@ -113,7 +113,7 @@ void Red::dijkstra(const std::string& origen) {
 
         // Relajar vecinos
         for (const auto& vecPar : enrutadores_.at(u).getVecinos()) {
-            const std::string& v = vecPar.first;
+            const string& v = vecPar.first;
             int peso = vecPar.second;
 
             if (dist[u] != INF && dist[u] + peso < dist[v]) {
@@ -129,10 +129,10 @@ void Red::dijkstra(const std::string& origen) {
     enr.limpiarTabla();
 
     for (const auto& par : enrutadores_) {
-        const std::string& dest = par.first;
+        const string& dest = par.first;
 
         // Reconstruir camino usando list (inserciones al frente O(1))
-        std::list<std::string> camino;
+        list<string> camino;
 
         if (dest == origen) {
             // Ruta hacia sí mismo
@@ -148,7 +148,7 @@ void Red::dijkstra(const std::string& origen) {
         }
 
         // Reconstruir: ir hacia atrás desde dest hasta origen
-        std::string actual = dest;
+        string actual = dest;
         while (!actual.empty()) {
             camino.push_front(actual);
             actual = previo[actual];
@@ -293,14 +293,14 @@ void Red::imprimirTablaGlobal() const {
 
     // Filas
     for (const auto& fila : nodos) {
-        std::cout << "  " << std::setw(COL) << fila;
+        cout << "  " << setw(COL) << fila;
         const auto& tabla = enrutadores_.at(fila).getTablaCostos();
         for (const auto& col : nodos) {
             auto it = tabla.find(col);
             if (it == tabla.end() || it->second == INF) {
-                std::cout << std::setw(COL) << "INF";
+                cout << setw(COL) << "INF";
             } else {
-                std::cout << std::setw(COL) << it->second;
+                cout << setw(COL) << it->second;
             }
         }
         cout << "\n";

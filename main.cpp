@@ -8,11 +8,11 @@ int main() {
 
     cout << "\n|========================================|\n";
     cout << "|     SIMULADOR DE RED DE ENRUTADORES      |\n";
-    cout << "|  Informática 2 - Universidad de Antioquia|\n";
+    cout << "|  Informatica 2 - Universidad de Antioquia|\n";
     cout << "|==========================================|\n";
 
     // Preguntar si cargar el ejemplo de la práctica
-    cout << "\n  ¿Desea cargar la topología de ejemplo (Figura 1)? (s/n): ";
+    cout << "  ¿Desea cargar la topología de ejemplo (Figura 1)? (s/n): ";
     char resp;
     cin >> resp;
     if (resp == 's' || resp == 'S') {

@@ -45,6 +45,23 @@ public:
 
     // Mapa completo de caminos (para iterar)
     const map<string, list<string>>& getTablaCaminos() const;
+    // --- Modificadores de topología ---
+    void agregarVecino(const string& id, int costo);
+    void eliminarVecino(const string& id);
+    bool tieneVecino(const string& id) const;
+
+    // --- Actualización de tabla de enrutamiento ---
+    // Establece el costo mínimo y el camino completo hacia un destino
+    void setCostoYCamino(const string& destino, int costo,
+                         const list<string>& camino);
+
+    // Limpia la tabla de costos y caminos (antes de recalcular)
+    void limpiarTabla();
+
+    // --- Impresión ---
+    void imprimirTabla() const;
+    void imprimirVecinos() const;
+
 
 
 
