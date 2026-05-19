@@ -245,7 +245,7 @@ bool Red::cargarDesdeArchivo(const string& archivo) {
 
     fin.close();
     calcularRutas();
-    cout << "[+] Topología cargada desde '" << archivo << "'.\n";
+    cout << "[+] Topologia cargada desde '" << archivo << "'.\n";
     return true;
 }
 
@@ -260,7 +260,7 @@ void Red::listarEnrutadores() const {
 }
 
 void Red::imprimirTopologia() const {
-    cout << "\n========== TOPOLOGÍA DE LA RED ==========\n";
+    cout << "\n========== TOPOLOGiA DE LA RED ==========\n";
     listarEnrutadores();
     cout << "\n  Conexiones:\n";
     for (const auto& par : enrutadores_) {
@@ -282,7 +282,7 @@ void Red::imprimirTablaGlobal() const {
     }
 
     const int COL = 8;
-    cout << "\n========== TABLA GLOBAL DE COSTOS MÍNIMOS ==========\n";
+    cout << "\n========== TABLA GLOBAL DE COSTOS MINIMOS ==========\n";
 
     // Encabezado
     cout << "  " << setw(COL) << " ";
@@ -333,7 +333,7 @@ void Red::imprimirCamino(const string& origen, const string& destino) const {
     cout << "  Camino: ";
     bool primero = true;
     for (const auto& nodo : camino) {
-        if (!primero) out << " -> ";
+        if (!primero) cout << " -> ";
         cout << nodo;
         primero = false;
     }
